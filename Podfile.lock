@@ -1,0 +1,22 @@
+PODS:
+  - Bolts/Tasks (1.4.0)
+  - Eureka (1.1.0)
+  - Nimble (3.0.0)
+  - Parse (1.9.1):
+    - Bolts/Tasks (>= 1.4.0)
+  - Quick (0.8.0)
+
+DEPENDENCIES:
+  - Eureka (~> 1.0)
+  - Nimble
+  - Parse
+  - Quick
+
+SPEC CHECKSUMS:
+  Bolts: 0e9bce58b9b9f5e8a7a4d47b16d2fabec289072b
+  Eureka: 9b198a9f4098a1e75df31dde502105bc0b7e305b
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Parse: 54a965c8c19a6dde90284ab654dbcc77ef8c001b
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+
+COCOAPODS: 0.39.0

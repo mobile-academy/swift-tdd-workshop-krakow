@@ -1,0 +1,6 @@
+framework module Pods_TDDWorkshopTests {
+  umbrella header "Pods-TDDWorkshopTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
