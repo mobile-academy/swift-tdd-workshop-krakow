@@ -9,6 +9,7 @@ xcodeproj 'TDDWorkshop'
 
 pod 'Parse'
 pod 'Eureka', '~> 1.0'
+pod 'UIImage-Resize', '~> 1.0'
 
 target :TDDWorkshopTests, :exclusive  => :true do
   pod 'Quick'

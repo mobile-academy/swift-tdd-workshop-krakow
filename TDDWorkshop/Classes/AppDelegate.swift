@@ -1,8 +1,4 @@
 //
-//  AppDelegate.swift
-//  TDD Workshop
-//
-//  Created by Maciej Oczko on 03.07.2015.
 //  Copyright © 2015 Mobile Academy. All rights reserved.
 //
 
@@ -13,10 +9,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    //MARK: UIApplicationDelegate
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        configureApplication(launchOptions)
         modifyAppearance()
         return true
     }
+
+    //MARK: Helpers
 
     func modifyAppearance() {
         let workshopBackgroundColor = UIColor.barsBackgroundTintColor()
@@ -32,6 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = tintColor
         
         UIRefreshControl.appearance().tintColor = tintColor
+    }
+
+    func configureApplication(launchOptions: [NSObject: AnyObject]?) {
+        let configurator = Configurator()
+        let appConfiguration = ConfigurationFactory().applicationConfiguration()
+        configurator.configureApplication(appConfiguration, launchOptions: launchOptions)
     }
 }
 

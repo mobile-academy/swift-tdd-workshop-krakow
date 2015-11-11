@@ -5,12 +5,14 @@ PODS:
   - Parse (1.9.1):
     - Bolts/Tasks (>= 1.4.0)
   - Quick (0.8.0)
+  - UIImage-Resize (1.0.1)
 
 DEPENDENCIES:
   - Eureka (~> 1.0)
   - Nimble
   - Parse
   - Quick
+  - UIImage-Resize (~> 1.0)
 
 SPEC CHECKSUMS:
   Bolts: 0e9bce58b9b9f5e8a7a4d47b16d2fabec289072b
@@ -18,5 +20,6 @@ SPEC CHECKSUMS:
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Parse: 54a965c8c19a6dde90284ab654dbcc77ef8c001b
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+  UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
 
 COCOAPODS: 0.39.0

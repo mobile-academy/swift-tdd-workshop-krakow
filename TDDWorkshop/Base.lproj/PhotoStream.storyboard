@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3jm-JN-bUQ">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Photo Stream-->
+        <scene sceneID="bnB-yr-xbv">
+            <objects>
+                <navigationController title="Photo Stream" id="3jm-JN-bUQ" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Njf-vg-UWI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="K2V-uQ-pa6" kind="relationship" relationship="rootViewController" id="gNs-Uh-Xq2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fwh-Vx-tCQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="65" y="-410"/>
+        </scene>
+        <!--Photo Stream-->
+        <scene sceneID="tdz-ny-3rm">
+            <objects>
+                <collectionViewController storyboardIdentifier="PhotoStream" title="Photo Stream" id="K2V-uQ-pa6" customClass="PhotoStreamViewController" customModule="TDDWorkshop" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="JQt-lv-8xf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewLayout key="collectionViewLayout" id="jfd-wo-Ikh" customClass="PhotoStreamLayout" customModule="TDDWorkshop" customModuleProvider="target"/>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="PhotoStreamCell" id="ZPH-Px-pLS" customClass="PhotoStreamCell" customModule="TDDWorkshop" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhotoStream" translatesAutoresizingMaskIntoConstraints="NO" id="aj0-AW-ggU">
+                                            <rect key="frame" x="0.0" y="0.5" width="100" height="100"/>
+                                            <animations/>
+                                            <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        </imageView>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <animations/>
+                                <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="aj0-AW-ggU" firstAttribute="centerY" secondItem="ZPH-Px-pLS" secondAttribute="centerY" id="ea9-xE-8eL"/>
+                                    <constraint firstItem="aj0-AW-ggU" firstAttribute="height" secondItem="ZPH-Px-pLS" secondAttribute="height" id="jbZ-RN-Pfa"/>
+                                    <constraint firstItem="aj0-AW-ggU" firstAttribute="width" secondItem="ZPH-Px-pLS" secondAttribute="width" id="rqZ-Jr-UQW"/>
+                                    <constraint firstItem="aj0-AW-ggU" firstAttribute="centerX" secondItem="ZPH-Px-pLS" secondAttribute="centerX" id="xLg-GJ-3Ob"/>
+                                </constraints>
+                                <size key="customSize" width="100" height="100"/>
+                                <connections>
+                                    <outlet property="imageView" destination="aj0-AW-ggU" id="ktZ-zm-TcV"/>
+                                    <segue destination="lhx-e1-8ze" kind="showDetail" identifier="StreamItemPreviewSegue" id="qAt-t3-mRw"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="K2V-uQ-pa6" id="zmV-1F-7nj"/>
+                            <outlet property="delegate" destination="K2V-uQ-pa6" id="Ibw-8f-1xL"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Photos" image="PhotoStream" id="ZN9-Tb-Lhc"/>
+                    <navigationItem key="navigationItem" title="Photo Stream" id="ZuL-1y-Zzg">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ZGS-V0-h7N">
+                            <connections>
+                                <action selector="didPressAddItemBarButtonItem:" destination="K2V-uQ-pa6" id="rQj-As-EqT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cLn-SY-qOR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="823" y="-410"/>
+        </scene>
+        <!--Stream Item View Controller-->
+        <scene sceneID="IDH-d7-nCg">
+            <objects>
+                <viewController storyboardIdentifier="StreamItemPreview" id="lhx-e1-8ze" customClass="StreamItemViewController" customModule="TDDWorkshop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HmY-MH-O6t"/>
+                        <viewControllerLayoutGuide type="bottom" id="QNc-WO-dYj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EwG-jv-gq5">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBZ-eV-hN5">
+                                <rect key="frame" x="20" y="20" width="39" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelBarButtonPressed:" destination="lhx-e1-8ze" eventType="touchUpInside" id="tpH-J6-Qw3"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhotoStream" translatesAutoresizingMaskIntoConstraints="NO" id="dMK-5e-Bct">
+                                <rect key="frame" x="288" y="290.5" width="24" height="19"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="520" id="dmN-2y-FJT"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="dmN-2y-FJT"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="OBZ-eV-hN5" secondAttribute="leading" id="348-9J-xFz"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerY" secondItem="EwG-jv-gq5" secondAttribute="centerY" id="4ll-ZA-6o7"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerY" secondItem="EwG-jv-gq5" secondAttribute="centerY" id="8EK-xm-vKJ"/>
+                            <constraint firstItem="OBZ-eV-hN5" firstAttribute="top" secondItem="HmY-MH-O6t" secondAttribute="bottom" id="GP3-ha-ddJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dMK-5e-Bct" secondAttribute="trailing" constant="20" id="MGl-kt-zen"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="width" secondItem="EwG-jv-gq5" secondAttribute="width" id="NnL-0j-i2N"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerX" secondItem="EwG-jv-gq5" secondAttribute="centerX" id="WlN-U1-XGS"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerX" secondItem="EwG-jv-gq5" secondAttribute="centerX" id="aWg-mp-cZz"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="leading" secondItem="EwG-jv-gq5" secondAttribute="leadingMargin" constant="20" id="dP9-yf-nAa"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerY" secondItem="EwG-jv-gq5" secondAttribute="centerY" id="vmc-Be-QyB"/>
+                            <constraint firstItem="dMK-5e-Bct" firstAttribute="centerX" secondItem="EwG-jv-gq5" secondAttribute="centerX" id="xcu-Mw-deE"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="4ll-ZA-6o7"/>
+                                <exclude reference="MGl-kt-zen"/>
+                                <exclude reference="NnL-0j-i2N"/>
+                                <exclude reference="WlN-U1-XGS"/>
+                                <exclude reference="dP9-yf-nAa"/>
+                                <exclude reference="vmc-Be-QyB"/>
+                                <exclude reference="xcu-Mw-deE"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="dMK-5e-Bct" id="UhB-rU-HXI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VF5-t9-7KP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1592" y="-386"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="PhotoStream" width="24" height="19"/>
+    </resources>
+</document>
