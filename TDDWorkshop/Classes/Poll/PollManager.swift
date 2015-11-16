@@ -9,12 +9,14 @@
 import Foundation
 import Parse
 
-class PollManager {
-    static let sharedInstance = PollManager()
-
+class PollManager: PollSender {
     private(set) var pollAlreadySent: Bool = false
 
-    func sendPoll(poll: Poll, completion: ((Bool) -> ())?) {
+    func isPollAlreadySent() -> Bool {
+        return pollAlreadySent
+    }
+
+    func sendPoll(poll: Poll, completion: ((Bool, NSError?) -> ())?) {
         let pollObject = PFObject(className: "Poll", dictionary: poll.toJSON())
         pollObject.saveInBackgroundWithBlock {
             [weak self] (success, error) in
@@ -25,7 +27,7 @@ class PollManager {
                 print("Error sending poll: \(error.description)")
             }
             if let completion = completion {
-                completion(success)
+                completion(success, error)
             }
         }
     }

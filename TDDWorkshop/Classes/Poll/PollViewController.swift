@@ -6,8 +6,6 @@
 //  Copyright © 2015 Mobile Academy. All rights reserved.
 //
 
-// TODO 1: Add spec file for PollViewController
-
 import UIKit
 import Eureka
 
@@ -23,7 +21,9 @@ let symbols = [
 
 class PollViewController: FormViewController {
     let sections = ["Intro", "Testing techniques", "Red Green Refactor", "Working with Legacy Code"]
-    var pollBuilder: PollBuilder = PollBuilder()
+
+    var pollManager: PollSender?
+    var pollBuilder: PollBuilder?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -36,17 +36,20 @@ class PollViewController: FormViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
-        // TODO 2: Write test that checks whether `rightBarButtonItem` is being set correctly depending on `pollAlreadySent` flag.
-        // Then, think what else could be tested for this class.
+        guard let pollManager = self.pollManager else {
+            return
+        }
+
+        // Think what else could be tested for this class.
         self.navigationItem.rightBarButtonItem =
-                PollManager.sharedInstance.pollAlreadySent
+                pollManager.isPollAlreadySent()
                 ? nil
                 : UIBarButtonItem(title: "Send", style: .Plain, target: self, action: "didTapSend")
 
     }
 
     func didTapSend() {
-        guard self.pollBuilder.isValid() else {
+        guard let pollBuilder = self.pollBuilder where pollBuilder.isValid() else {
             self.showInvalidPollAlert()
             return
         }
@@ -66,9 +69,16 @@ class PollViewController: FormViewController {
     }
 
     func sendPoll() {
-        let poll = self.pollBuilder.poll()
-        PollManager.sharedInstance.sendPoll(poll) {
-            [weak self] success in
+        guard let pollManager = self.pollManager else {
+            return
+        }
+        guard let pollBuilder = self.pollBuilder else {
+            return
+        }
+
+        let poll = pollBuilder.poll()
+        pollManager.sendPoll(poll) {
+            [weak self] success, error in
             if success {
                 self?.navigationItem.setRightBarButtonItem(nil, animated: true)
             }
@@ -102,8 +112,8 @@ class PollViewController: FormViewController {
                         guard let _self = self else {
                             return
                         }
-                        if _self.validateText(row.value) {
-                            _self.pollBuilder.setName(row.value)
+                        if let pollBuilder = _self.pollBuilder where _self.validateText(row.value) {
+                            pollBuilder.setName(row.value)
                         } else {
                             _self.showInvalidValueAlert(row.value)
                         }
@@ -121,8 +131,8 @@ class PollViewController: FormViewController {
                         guard let _self = self else {
                             return
                         }
-                        if _self.validateEmail(row.value) {
-                            _self.pollBuilder.setEmail(row.value)
+                        if let pollBuilder = _self.pollBuilder where _self.validateEmail(row.value) {
+                            pollBuilder.setEmail(row.value)
                         } else {
                             _self.showInvalidValueAlert(row.value)
                         }
@@ -138,8 +148,8 @@ class PollViewController: FormViewController {
                     guard let _self = self else {
                         return
                     }
-                    if _self.validateComment(row.value) {
-                        _self.pollBuilder.setComments(row.value)
+                    if let pollBuilder = _self.pollBuilder where _self.validateComment(row.value) {
+                        pollBuilder.setComments(row.value)
                     } else {
                         _self.showInvalidValueAlert(row.value)
                     }
@@ -155,20 +165,18 @@ class PollViewController: FormViewController {
                         $0.title = "What's your rate?"
                         $0.options = [🎉, 👍🏻, 😎, 👎🏻, 😡]
                         $0.value = 🎉
-                        guard let _self = self else {
-                            return
+                        if let pollBuilder = self?.pollBuilder {
+                            pollBuilder.setRate(symbols[🎉], forTitle: section)
                         }
-                        _self.pollBuilder.setRate(symbols[🎉], forTitle: section)
                     }
                     .onChange {
                         [weak self] row in
                         guard let value = row.value else {
                             return
                         }
-                        guard let _self = self else {
-                            return
+                        if let pollBuilder = self?.pollBuilder {
+                            pollBuilder.setRate(symbols[value], forTitle: section)
                         }
-                        _self.pollBuilder.setRate(symbols[value], forTitle: section)
                     }
                     <<<
                     TextAreaRow("comment\(i)") {
@@ -180,8 +188,8 @@ class PollViewController: FormViewController {
                         guard let _self = self else {
                             return
                         }
-                        if _self.validateComment(row.value) {
-                            _self.pollBuilder.setComment(row.value, forTitle: section)
+                        if let pollBuilder = _self.pollBuilder where _self.validateComment(row.value) {
+                            pollBuilder.setComment(row.value, forTitle: section)
                         } else {
                             _self.showInvalidValueAlert(row.value)
                         }

@@ -45,6 +45,8 @@
 		51043BBCC8A7FA2100EFE659 /* StreamItemUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51043C337BBCBCDD780EDE19 /* StreamItemUploader.swift */; };
 		51043C19A4A903FCBA7C795E /* StreamItemUploaderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510439024D3A16644453FBF5 /* StreamItemUploaderSpec.swift */; };
 		51043C751412DCF7028CA6F7 /* PhotoStreamViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51043D867CB9F601F3B2D7B0 /* PhotoStreamViewControllerSpec.swift */; };
+		810861B71F0EC48F748F4ABD /* PollViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108664EF2815E24CD31586B /* PollViewControllerSpec.swift */; };
+		810866451A2E1C7800E9DE31 /* PollContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81086F39CC321F715407E333 /* PollContracts.swift */; };
 		51043CA688E614B0BC04AD63 /* ImageManipulatorFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510434F731548560480F4FB7 /* ImageManipulatorFake.swift */; };
 		51043CB6322AE2490391BE05 /* ParseAdapting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510435D99B8B28F4CD575587 /* ParseAdapting.swift */; };
 		51043CE7B90CD294540DA80E /* AlertActionFactoryFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51043D7141B91F0066822119 /* AlertActionFactoryFake.swift */; };
@@ -137,6 +139,8 @@
 		51043CFCB812DE53D6F3724E /* PhotoStreamLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoStreamLayout.swift; sourceTree = "<group>"; };
 		51043D7141B91F0066822119 /* AlertActionFactoryFake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertActionFactoryFake.swift; sourceTree = "<group>"; };
 		51043D867CB9F601F3B2D7B0 /* PhotoStreamViewControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoStreamViewControllerSpec.swift; sourceTree = "<group>"; };
+		8108664EF2815E24CD31586B /* PollViewControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollViewControllerSpec.swift; sourceTree = "<group>"; };
+		81086F39CC321F715407E333 /* PollContracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollContracts.swift; sourceTree = "<group>"; };
 		51043DF90B2B0152DF6FF46B /* StreamItemTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamItemTransformer.swift; sourceTree = "<group>"; };
 		51043E2525F90B539767A93B /* PhotoStreamCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoStreamCell.swift; sourceTree = "<group>"; };
 		51043F2BE2E9D941A49D7CA8 /* UIRefreshControlFake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRefreshControlFake.swift; sourceTree = "<group>"; };
@@ -249,6 +253,8 @@
 			children = (
 				A1DFDFA41BF3D126007D3C33 /* PollManager.swift */,
 				510430AFBBDF3557A5D8AF14 /* PollViewController.swift */,
+				8108664EF2815E24CD31586B /* PollViewControllerSpec.swift */,
+				81086F39CC321F715407E333 /* PollContracts.swift */,
 			);
 			path = Poll;
 			sourceTree = "<group>";
@@ -679,6 +685,7 @@
 				B27A9D49C4908E6CD130E12C /* SpeakerCollectionViewCell.swift in Sources */,
 				43FA23BF1BF8811900A5AD35 /* SpeakersCollectionViewLayout.swift in Sources */,
 				B27A9FC130EC0A542BD236B0 /* SeparatorView.swift in Sources */,
+				810866451A2E1C7800E9DE31 /* PollContracts.swift in Sources */,
 				510436B2B0F419B81E1D35CA /* Configuration.swift in Sources */,
 				51043F404C0E2D0414BAE37D /* ConfigurationFactory.swift in Sources */,
 				51043121927C1E86982B46CC /* Configurator.swift in Sources */,
@@ -707,6 +714,7 @@
 				51043C751412DCF7028CA6F7 /* PhotoStreamViewControllerSpec.swift in Sources */,
 				B27A9D82F37544CEEAC47248 /* SpeakersViewControllerSpec.swift in Sources */,
 				B27A9435A5125ABF50C02EB4 /* SpeakersCollectionViewDataSourceSpec.swift in Sources */,
+				810861B71F0EC48F748F4ABD /* PollViewControllerSpec.swift in Sources */,
 				51043605C18A362FF71BEC8E /* StreamItemDownloaderSpec.swift in Sources */,
 				51043B08EC646440A8F60810 /* ParseAdapterFake.swift in Sources */,
 				51043C19A4A903FCBA7C795E /* StreamItemUploaderSpec.swift in Sources */,
