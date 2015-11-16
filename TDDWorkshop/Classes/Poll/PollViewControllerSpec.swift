@@ -9,6 +9,7 @@ import Nimble
 
 @testable
 import TDDWorkshop
+import Eureka
 
 class PollViewControllerSpec: QuickSpec {
     override func spec() {
@@ -92,6 +93,60 @@ class PollViewControllerSpec: QuickSpec {
             }
 
         }
+
+        describe("validation factory usage for name") {
+            var factory: FakeValidationFactory!
+            var validator: FakeValidator!
+
+            beforeEach {
+                validator = FakeValidator()
+                factory = FakeValidationFactory(validator: validator)
+                sut.validatorFactory = factory
+                sut.loadView()
+                sut.viewDidLoad()
+
+                sut.form.allRows.filter {
+                    $0.tag == "name"
+                }.forEach {
+                    row in
+                    row.hightlightCell()
+                    row.baseValue = "the string"
+                    row.unhighlightCell()
+                }
+            }
+
+            it("should validate text with proper validator") {
+                expect(validator.didCallValidateText).to(beTrue())
+            }
+        }
+    }
+
+    class FakeValidationFactory: ValidatorFactory {
+        let validator: FakeValidator
+
+        init(validator: FakeValidator) {
+            self.validator = validator
+        }
+
+        override func validatorForKey(key: String) -> Validator? {
+            return self.validator
+        }
+    }
+
+    class FakeValidator: Validator {
+        private(set) var didCallValidateText: Bool = false
+        private(set) var didCallFailMessage: Bool = false
+
+        func validateText(text: String?) -> Bool {
+            self.didCallValidateText = true
+            return false
+        }
+
+        func validationFailMessage() -> String {
+            self.didCallFailMessage = true
+            return ""
+        }
+
     }
 
     class FakePollManager: PollSender {
