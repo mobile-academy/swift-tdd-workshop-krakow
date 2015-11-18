@@ -6,6 +6,8 @@
 //  Copyright © 2015 Mobile Academy. All rights reserved.
 //
 
+// TODO 1: Add spec file for PollViewController
+
 import UIKit
 import Eureka
 
@@ -34,6 +36,8 @@ class PollViewController: FormViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        // TODO 2: Write test that checks whether `rightBarButtonItem` is being set correctly depending on `pollAlreadySent` flag.
+        // Then, think what else could be tested for this class.
         self.navigationItem.rightBarButtonItem =
                 PollManager.sharedInstance.pollAlreadySent
                 ? nil
