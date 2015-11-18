@@ -208,6 +208,22 @@ class PollViewController: FormViewController {
 
     // MARK: Validation
 
+    // TODO: Extract and test validation logic (to make it more reusable and reliable).
+    // Hint 1: Create common Validator protocol
+    // Hint 2: Create different validators (comment, email, etc.)
+    // Hint 3: Create validators factory (remember about tests)
+    // Hint 4: To simulate input on, e.g. 'name' form cell use this code:
+    /*
+        <this controller>.form.allRows.filter {
+            $0.tag == "name"
+        }.forEach {
+            row in
+            row.hightlightCell()
+            row.baseValue = "<fixture string>"
+            row.unhighlightCell()
+        }
+    */
+
     func validateComment(comment: String?) -> Bool {
         guard let comment = comment where !comment.isEmpty else {
             return false
