@@ -85,9 +85,7 @@ class PhotoStreamViewController: UICollectionViewController, ItemCreatingDelegat
             if success == false {
                 self?.presentErrorAlertWithMessage("Failed to upload stream item!")
             } else {
-                // TODO: Task 1
-                // TODO: add `item` to `streamItems`
-                // TODO: reload data on `collectionView`
+                self?.addItem(item)
             }
         }
     }
@@ -97,6 +95,11 @@ class PhotoStreamViewController: UICollectionViewController, ItemCreatingDelegat
     }
 
     //MARK: Private methods
+
+    private func addItem(item:StreamItem) {
+        streamItems.append(item)
+        collectionView?.reloadData()
+    }
 
     private func presentErrorAlertWithMessage(message: String) {
         let errorAlert = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)

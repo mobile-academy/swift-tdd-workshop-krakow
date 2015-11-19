@@ -127,9 +127,17 @@ class PhotoStreamViewControllerSpec: QuickSpec {
                             beforeEach {
                                 uploader.capturedCompletion?(true, nil)
                             }
-                            //TODO: Task 1
-                            //TODO: add a test which checks if item is present in streamItems
-                            //TODO: add a test which checks if collection view is reloaded (use collection view fake)
+                            it("should reload collection view") {
+                                expect(collectionViewFake.reloadDataCalled) == true
+                            }
+                            it("should add item to stream item list") {
+                                expect(sut.streamItems.count) == 1
+                            }
+                            it("should add uploaded item to stream item list") {
+                                let item = sut.streamItems[0]
+                                expect(item.title).to(equal("Foo"))
+                                expect(item.imageData).to(equal(fixtureItem.imageData))
+                            }
                         }
                         context("with failure") {
                             beforeEach {
