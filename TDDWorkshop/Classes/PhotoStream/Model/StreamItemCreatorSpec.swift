@@ -160,23 +160,67 @@ class StreamItemCreatorSpec: QuickSpec {
                             sut.imagePickerController(picker,
                                     didFinishPickingMediaWithInfo: [UIImagePickerControllerOriginalImage: image])
                         }
-                        //TODO: Task 3
-                        //TODO: implement functionality which asks user about item title
-
-                        it("should scale selected image using Image Manipulator") {
-                            expect(imageManipulator.capturedImageToScale).notTo(beNil())
-                            expect(imageManipulator.capturedImageToScale!) == image
+                        it("should dismiss image picker") {
+                            expect(presenter.capturedDismissedViewController as? UIImagePickerController).notTo(beNil())
                         }
-                        it("should convert scaled image to data") {
-                            expect(imageManipulator.capturedImageToDataConversion).notTo(beNil())
-                            expect(imageManipulator.capturedImageToDataConversion!) == imageManipulator.fakeScaledImage
+                        it("should present alert controller") {
+                            expect(presenter.capturedPresentedViewController as? UIAlertController).notTo(beNil())
                         }
-                        it("should inform delegate about Stream Item creation") {
-                            expect(testDelegate.capturedStreamItem).notTo(beNil())
+                        it("should present alert controller with title 'Title of the item'") {
+                            let alertController = presenter.capturedPresentedViewController as! UIAlertController
+                            expect(alertController.title) == "Title of the item"
                         }
-                        it("should create stream item with data of scaled image") {
-                            let item = testDelegate.capturedStreamItem!
-                            expect(item.imageData) == imageManipulator.fakeDataFromImage
+                        it("should present alert controller with action sheet style") {
+                            let alertController = presenter.capturedPresentedViewController as! UIAlertController
+                            expect(alertController.preferredStyle) == UIAlertControllerStyle.Alert
+                        }
+                        it("should add text field to alert controller") {
+                            let alertController = presenter.capturedPresentedViewController as! UIAlertController
+                            expect(alertController.textFields).notTo(beNil())
+                        }
+                        it("should have 1 alert action") {
+                            expect(alertActionFactory.capturedActions.count) == 1
+                        }
+                        it("should present alert controller with 1st option 'OK'") {
+                            let alertAction = alertActionFactory.capturedActions[0]
+                            expect(alertAction.title) == "OK"
+                        }
+                        it("should present alert controller with 1st option set to Default style") {
+                            let alertAction = alertActionFactory.capturedActions[0]
+                            expect(alertAction.style) == UIAlertActionStyle.Default
+                        }
+                        context("when user selects") {
+                            beforeEach {
+                                let alertController = presenter.capturedPresentedViewController as! UIAlertController
+                                let textField = alertController.textFields!.first!
+                                textField.text = "Fixture title"
+                            }
+                            context("first option") {
+                                beforeEach {
+                                    let action = alertActionFactory.capturedActions[0]
+                                    let handler = alertActionFactory.capturedHandlers[0]
+                                    handler(action)
+                                }
+                                it("should scale selected image using Image Manipulator") {
+                                    expect(imageManipulator.capturedImageToScale).notTo(beNil())
+                                    expect(imageManipulator.capturedImageToScale!) == image
+                                }
+                                it("should convert scaled image to data") {
+                                    expect(imageManipulator.capturedImageToDataConversion).notTo(beNil())
+                                    expect(imageManipulator.capturedImageToDataConversion!) == imageManipulator.fakeScaledImage
+                                }
+                                it("should inform delegate about Stream Item creation") {
+                                    expect(testDelegate.capturedStreamItem).notTo(beNil())
+                                }
+                                it("should create stream item with data of scaled image") {
+                                    let item = testDelegate.capturedStreamItem!
+                                    expect(item.imageData) == imageManipulator.fakeDataFromImage
+                                }
+                                it("should create stream item with title provided in the alert") {
+                                    let item = testDelegate.capturedStreamItem!
+                                    expect(item.title) == "Fixture title"
+                                }
+                            }
                         }
                     }
                     context("did cancel") {
