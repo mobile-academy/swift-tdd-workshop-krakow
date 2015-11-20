@@ -35,7 +35,16 @@ class StreamItemCreator: NSObject, ItemCreating, UIImagePickerControllerDelegate
         //TODO: if it's empty, inform delegate about error
         //TODO: if it contains single element, present `UIImagePickerController`
         //TODO: if it contains more then one element, present `UIAlertControler` so user has to pick source
-        presentSourcesActionSheet()
+
+        let sources = resourceAvailability.availableSources()
+        switch (sources.count) {
+            case 0:
+                delegate?.creator(self, failedWithError: NSError(domain: "TDDWorkshop", code:-1, userInfo: nil))
+            case 1:
+                presentPickerWithResourceType(sources.first!)
+            default:
+                presentSourcesActionSheet(sources)
+        }
     }
 
     //MARK: UIImagePickerControllerDelegate
@@ -65,10 +74,8 @@ class StreamItemCreator: NSObject, ItemCreating, UIImagePickerControllerDelegate
 
     //MARK: Private methods
 
-    private func presentSourcesActionSheet() {
+    private func presentSourcesActionSheet(availableSources: [UIImagePickerControllerSourceType]) {
         let alertController = UIAlertController(title: "Add new Item to the stream", message: nil, preferredStyle: .ActionSheet)
-
-        let availableSources = resourceAvailability.availableSources()
         for source in availableSources {
             switch (source) {
             case .PhotoLibrary:
