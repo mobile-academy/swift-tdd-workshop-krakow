@@ -21,7 +21,10 @@ let symbols = [
 
 class PollViewController: FormViewController {
     let sections = ["Intro", "Testing techniques", "Red Green Refactor", "Working with Legacy Code"]
-    var pollBuilder: PollBuilder = PollBuilder()
+
+    var pollManager: PollSender?
+    var pollBuilder: PollBuilder?
+    var validatorFactory: ValidatorFactory?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -34,15 +37,20 @@ class PollViewController: FormViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        guard let pollManager = self.pollManager else {
+            return
+        }
+
+        // Think what else could be tested for this class.
         self.navigationItem.rightBarButtonItem =
-                PollManager.sharedInstance.pollAlreadySent
+                pollManager.isPollAlreadySent()
                 ? nil
                 : UIBarButtonItem(title: "Send", style: .Plain, target: self, action: "didTapSend")
 
     }
 
     func didTapSend() {
-        guard self.pollBuilder.isValid() else {
+        guard let pollBuilder = self.pollBuilder where pollBuilder.isValid() else {
             self.showInvalidPollAlert()
             return
         }
@@ -62,9 +70,16 @@ class PollViewController: FormViewController {
     }
 
     func sendPoll() {
-        let poll = self.pollBuilder.poll()
-        PollManager.sharedInstance.sendPoll(poll) {
-            [weak self] success in
+        guard let pollManager = self.pollManager else {
+            return
+        }
+        guard let pollBuilder = self.pollBuilder else {
+            return
+        }
+
+        let poll = pollBuilder.poll()
+        pollManager.sendPoll(poll) {
+            [weak self] success, error in
             if success {
                 self?.navigationItem.setRightBarButtonItem(nil, animated: true)
             }
@@ -85,6 +100,7 @@ class PollViewController: FormViewController {
     }
 
     func configureGeneralSection() {
+
         form +++ Section("General")
                 <<<
                 NameRow("name") {
@@ -95,13 +111,11 @@ class PollViewController: FormViewController {
                     [weak self] (_, row) in
                     row.onCellUnHighlight {
                         (_, row) in
-                        guard let _self = self else {
-                            return
-                        }
-                        if _self.validateText(row.value) {
-                            _self.pollBuilder.setName(row.value)
+                        let validator = self?.validatorFactory?.validatorForKey("name")
+                        if let validator = validator where validator.validateText(row.value) {
+                            self?.pollBuilder?.setName(row.value)
                         } else {
-                            _self.showInvalidValueAlert(row.value)
+                            self?.showInvalidValueAlert(validator?.validationFailMessage())
                         }
                     }
                 }
@@ -114,13 +128,11 @@ class PollViewController: FormViewController {
                     [weak self] (_, row) in
                     row.onCellUnHighlight {
                         (_, row) in
-                        guard let _self = self else {
-                            return
-                        }
-                        if _self.validateEmail(row.value) {
-                            _self.pollBuilder.setEmail(row.value)
+                        let validator = self?.validatorFactory?.validatorForKey("username")
+                        if let validator = validator where validator.validateText(row.value) {
+                            self?.pollBuilder?.setEmail(row.value)
                         } else {
-                            _self.showInvalidValueAlert(row.value)
+                            self?.showInvalidValueAlert(validator?.validationFailMessage())
                         }
                     }
                 }
@@ -130,14 +142,12 @@ class PollViewController: FormViewController {
                     $0.placeholder = "Write general feedback..."
                 }
                 .onCellUnHighlight {
-                    [weak self] (cell, row) in
-                    guard let _self = self else {
-                        return
-                    }
-                    if _self.validateComment(row.value) {
-                        _self.pollBuilder.setComments(row.value)
+                    [weak self] (_, row) in
+                    let validator = self?.validatorFactory?.validatorForKey("feedback")
+                    if let validator = validator where validator.validateText(row.value) {
+                        self?.pollBuilder?.setComments(row.value)
                     } else {
-                        _self.showInvalidValueAlert(row.value)
+                        self?.showInvalidValueAlert(validator?.validationFailMessage())
                     }
                 }
     }
@@ -151,20 +161,13 @@ class PollViewController: FormViewController {
                         $0.title = "What's your rate?"
                         $0.options = [🎉, 👍🏻, 😎, 👎🏻, 😡]
                         $0.value = 🎉
-                        guard let _self = self else {
-                            return
-                        }
-                        _self.pollBuilder.setRate(symbols[🎉], forTitle: section)
+                        self?.pollBuilder?.setRate(symbols[🎉], forTitle: section)
                     }
                     .onChange {
                         [weak self] row in
-                        guard let value = row.value else {
-                            return
+                        if let value = row.value {
+                            self?.pollBuilder?.setRate(symbols[value], forTitle: section)
                         }
-                        guard let _self = self else {
-                            return
-                        }
-                        _self.pollBuilder.setRate(symbols[value], forTitle: section)
                     }
                     <<<
                     TextAreaRow("comment\(i)") {
@@ -172,14 +175,12 @@ class PollViewController: FormViewController {
                         $0.placeholder = "Write your comments here..."
                     }
                     .onCellUnHighlight {
-                        [weak self] (cell, row) in
-                        guard let _self = self else {
-                            return
-                        }
-                        if _self.validateComment(row.value) {
-                            _self.pollBuilder.setComment(row.value, forTitle: section)
+                        [weak self] (_, row) in
+                        let validator = self?.validatorFactory?.validatorForKey("comment")
+                        if let validator = validator where validator.validateText(row.value) {
+                            self?.pollBuilder?.setComment(row.value, forTitle: section)
                         } else {
-                            _self.showInvalidValueAlert(row.value)
+                            self?.showInvalidValueAlert(validator?.validationFailMessage())
                         }
                     }
         }
@@ -187,43 +188,10 @@ class PollViewController: FormViewController {
 
     func showInvalidValueAlert(value: String?) {
         if let printableValue = value {
-            let message = "Value you entered is invalid: \"\(printableValue)\""
+            let message = "Field value is incorrect: \"\(printableValue)\""
             let alert = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-        }
-    }
-
-    // MARK: Validation
-
-    func validateComment(comment: String?) -> Bool {
-        guard let comment = comment where !comment.isEmpty else {
-            return false
-        }
-        return comment.characters.count > 10
-    }
-
-    func validateEmail(email: String?) -> Bool {
-        guard let email = email where !email.isEmpty else {
-            return false
-        }
-        let pattern = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"
-        let regex = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return regex.evaluateWithObject(email)
-    }
-
-    func validateText(text: String?) -> Bool {
-        guard let text = text where !text.isEmpty else {
-            return false
-        }
-        return [
-                NSCharacterSet.illegalCharacterSet(),
-                NSCharacterSet.symbolCharacterSet(),
-                NSCharacterSet.punctuationCharacterSet(),
-                NSCharacterSet.nonBaseCharacterSet(),
-                NSCharacterSet.controlCharacterSet(),
-        ].reduce(true) {
-            $0 || text.rangeOfCharacterFromSet($1) != nil
         }
     }
 }
